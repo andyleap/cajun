@@ -190,6 +190,10 @@ func lexText(l *lexer) stateFn {
 			l.emitAnyPreviousText()
 			return lexFreeLink
 		}
+		if strings.HasPrefix(l.input[l.pos:], "https://") {
+			l.emitAnyPreviousText()
+			return lexFreeLink
+		}
 		if strings.HasPrefix(l.input[l.pos:], "*") {
 			l.emitAnyPreviousText()
 			return lexAsterisk
@@ -582,7 +586,7 @@ func getTextLength(input string, currentPos int, closeChars string) int {
 	}
 }
 func getFreeLinkLength(input string, currentPos int) int {
-	i := strings.Index(input[currentPos:], " ")
+	i := strings.IndexAny(input[currentPos:], " \n")
 	link := input[currentPos : currentPos+i]
 	punctuation := ",.?!:;\"'"
 	for _, p := range punctuation {
