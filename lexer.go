@@ -587,6 +587,9 @@ func getTextLength(input string, currentPos int, closeChars string) int {
 }
 func getFreeLinkLength(input string, currentPos int) int {
 	i := strings.IndexAny(input[currentPos:], " \n")
+	if i == -1 {
+		i = len(input[currentPos:])
+	}
 	link := input[currentPos : currentPos+i]
 	punctuation := ",.?!:;\"'"
 	for _, p := range punctuation {
